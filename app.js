@@ -6,10 +6,11 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
-
 const { environment } = require('./config');
 const { ValidationError } = require('sequelize');
 const isProduction = environment === 'production';
+
+const { swaggerUi, specs } = require('./config/swagger');
 
 const app = express();
 app.use(morgan('dev'));
@@ -35,6 +36,9 @@ app.use(
         }
     })
 );
+
+//swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(routes);
 
