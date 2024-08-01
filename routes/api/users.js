@@ -1,11 +1,9 @@
-// backend/routes/api/users.js
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models');
-
 const validateSignup = [
   check('email')
     .exists({ checkFalsy: true })
@@ -34,37 +32,76 @@ const validateSignup = [
   handleValidationErrors
 ];
 
-const err ={}
-
+// Sign Up
 router.post(
-  '/',
+  '/signup',
   validateSignup,
   async (req, res, next) => {
-    const { firstName, lastName, email, password, username } = req.body;
-    const uniqueEmail = await User.findOne({where:{email:email}})
-    if(uniqueEmail){
-      err.title = "User already exists"
-        err.status = 403
-        err.message = "User with that email already exists"
-        return next(err)
+    const { email, password, username, firstName, lastName } = req.body;
+
+    try {
+      const user = await User.signup({ email, username, password, firstName, lastName });
+      await setTokenCookie(res, user);
+
+      return res.json({
+        user: user.toSafeObject()
+      });
+    } catch (err) {
+      next(err);
     }
-
-    const user = await User.signup({ firstName, lastName, email, username, password });
-
-    user.toJSON()
-    const token = await setTokenCookie(res, user);
-
-    return res.json({
-      id: user.id,
-      firstName,
-      lastName,
-      email,
-      username,
-      token: token
-    }
-    );
   }
 );
 
+// Get User Profile
+router.get(
+  '/profile',
+  restoreUser,
+  requireAuth,
+  async (req, res) => {
+    const { user } = req;
+    res.json({ user: user.toSafeObject() });
+  }
+);
+
+// Update User Profile
+router.put(
+  '/profile',
+  restoreUser,
+  requireAuth,
+  async (req, res, next) => {
+    const { user } = req;
+    const { firstName, lastName, email, username } = req.body;
+
+    try {
+      if (firstName) user.firstName = firstName;
+      if (lastName) user.lastName = lastName;
+      if (email) user.email = email;
+      if (username) user.username = username;
+
+      await user.save();
+
+      res.json({ user: user.toSafeObject() });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// Delete User
+router.delete(
+  '/',
+   restoreUser,
+  requireAuth,
+  async (req, res, next) => {
+    const { user } = req;
+
+    try {
+      await user.destroy();
+      res.json({ message: 'Account deleted successfully.' });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 module.exports = router;

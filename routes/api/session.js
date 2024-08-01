@@ -57,11 +57,11 @@ router.post(
 
 // Log out
 router.delete(
-  '/',
-  (_req, res) => {
-    res.clearCookie('token');
-    return res.json({ message: 'success' });
-  }
-);
-
+    '/',
+    (req, res) => {
+      res.clearCookie('token');
+      res.clearCookie('XSRF-TOKEN');
+      return res.json({ message: 'success' });
+    }
+  );
 module.exports = router;
