@@ -89,7 +89,7 @@ router.put(
 
 // Delete User
 router.delete(
-  '/',
+  '/profile',
    restoreUser,
   requireAuth,
   async (req, res, next) => {
@@ -97,7 +97,7 @@ router.delete(
 
     try {
       await user.destroy();
-      res.json({ message: 'Account deleted successfully.' });
+      res.json({ message: 'User deleted successfully' });
     } catch (err) {
       next(err);
     }
