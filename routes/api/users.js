@@ -32,6 +32,65 @@ const validateSignup = [
   handleValidationErrors
 ];
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management
+ */
+
+/**
+ * @swagger
+ * /api/users/signup:
+ *   post:
+ *     summary: User registration
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: "John"
+ *               lastName:
+ *                 type: string
+ *                 example: "Smith"
+ *               username:
+ *                 type: string
+ *                 example: "johnsmith"
+ *               email:
+ *                 type: string
+ *                 example: "john.smith@test.com"
+ *               password:
+ *                 type: string
+ *                 example: "password"
+  *     responses:
+ *       200:
+ *         description: User successfully registered
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 firstName:
+ *                   type: string
+ *                   example: "John"
+ *                 lastName:
+ *                   type: string
+ *                   example: "Smith"
+ *                 username:
+ *                   type: string
+ *                   example: "johnsmith"
+ *                 email:
+ *                   type: string
+ *                   example: "john.smith@test.com"
+ */
 // Sign Up
 router.post(
   '/signup',
@@ -52,7 +111,39 @@ router.post(
   }
 );
 
-// Get User Profile
+/**
+ * @swagger
+ * /api/users/profile:
+ *   get:
+ *     summary: Get Current User
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 firstName:
+ *                   type: string
+ *                   example: "John"
+ *                 lastName:
+ *                   type: string
+ *                   example: "Smith"
+ *                 username:
+ *                   type: string
+ *                   example: "johnsmith"
+ *                 email:
+ *                   type: string
+ *                   example: "john.smith@test.com"
+ */
+// Get Current User
 router.get(
   '/profile',
   restoreUser,
@@ -62,6 +153,58 @@ router.get(
     res.json({ user: user.toSafeObject() });
   }
 );
+
+/**
+ * @swagger
+ * /api/users/profile:
+ *   put:
+ *     summary: Update user profile
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: "Charlie"
+ *               lastName:
+ *                 type: string
+ *                 example: "Chaplin"
+ *               username:
+ *                 type: string
+ *                 example: "charliechaplin"
+ *               email:
+ *                 type: string
+ *                 example: "charlie.chaplin@test.com"
+ *     responses:
+ *       200:
+ *         description: User profile updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 firstName:
+ *                   type: string
+ *                   example: "Charlie"
+ *                 lastName:
+ *                   type: string
+ *                   example: "Chaplin"
+ *                 username:
+ *                   type: string
+ *                   example: "charliechaplin"
+ *                 email:
+ *                   type: string
+ *                   example: "charlie.chaplin@test.com"
+ */
 
 // Update User Profile
 router.put(
@@ -87,6 +230,26 @@ router.put(
   }
 );
 
+/**
+ * @swagger
+ * /api/users/profile:
+ *   delete:
+ *     summary: Delete user account
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User account deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User deleted successfully
+ */
 // Delete User
 router.delete(
   '/profile',

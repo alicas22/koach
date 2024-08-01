@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test":  "jest",
+    "test": "jest",
     "devStart": "nodemon app.js",
     "start": "node bin/www",
     "start:development": "nodemon ./bin/www",
@@ -35,7 +35,9 @@
     "morgan": "^1.10.0",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
