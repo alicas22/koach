@@ -12,6 +12,10 @@ const isProduction = environment === 'production';
 
 const { swaggerUi, specs } = require('./config/swagger');
 
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+const JS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui-bundle.min.js";
+
+
 const app = express();
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -38,8 +42,10 @@ app.use(
 );
 
 //swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+    customCssUrl: CSS_URL,
+    swaggerUrl: JS_URL
+  }));
 app.use(routes);
 
 app.use((_req, _res, next) => {
