@@ -48,6 +48,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
   }));
 app.use(routes);
 
+app.get('/', (req, res) => {
+    res.redirect('/api-docs');
+});
+
 app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
     err.title = "Resource Not Found";
