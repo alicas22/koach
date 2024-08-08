@@ -90,10 +90,12 @@ router.get(
  *             type: object
  *             properties:
  *               credential:
- *                 type: johnsmith
+ *                 type: string
+ *                 example: johnsmith
  *                 description: Email or username
  *               password:
- *                 type: password
+ *                 type: string
+ *                 example: password
  *     responses:
  *       200:
  *         description: User successfully logged in

@@ -4,11 +4,13 @@ module.exports = {
   environment: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 8000,
   db: {
-    username: process.env.DB_USERNAME || 'postgres',
+    username: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || 'password',
-    name: process.env.DB_NAME || 'database_development',
-    testName: process.env.DB_TEST_NAME || 'database_test',
-    host: process.env.DB_HOST || '127.0.0.1'
+    database: process.env.DB_NAME || 'database_development',
+    host: process.env.DB_HOST || '127.0.0.1',
+    port: process.env.DB_PORT || 5432,
+    dialect: 'postgres',
+    schema: process.env.DB_SCHEMA || 'public'
   },
   jwtConfig: {
     secret: process.env.JWT_SECRET || 'secret',
